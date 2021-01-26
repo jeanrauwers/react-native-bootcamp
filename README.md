@@ -24,7 +24,7 @@ So please share this video with your friends.
 
 ## Videos on Youtube :
 
-* [MERN Bootcamp demo](https://www.youtube.com/watch?v=vtuciNQFpyA) - Demo the project we will building during the series
+* [MERN Bootcamp demo](https://www.youtube.com/watch?v=vtuciNQFpyA) - The Web App demo of the project can be found here.
 
 
 ## Want to know more about my motivation for this project?
