@@ -1,5 +1,6 @@
 const express = require('express')
 const verifyToken = require('./config/verifyToken')
+const multer = require('multer')
 
 const UserController = require('./controllers/UserController')
 const EventController = require('./controllers/EventController')
@@ -8,35 +9,38 @@ const LoginController = require('./controllers/LoginController')
 const RegistrationController = require('./controllers/RegistrationController')
 const ApprovalController = require('./controllers/ApprovalController')
 const RejectionController = require('./controllers/RejectionController')
-const uploadToS3 = require('./config/s3Upload');
+// const uploadToS3 = require('./config/s3Upload');  removing s3Upload support
+const uploadConfig = require('./config/upload')
 const routes = express.Router()
+const upload = multer(uploadConfig)
 
-routes.get('/status', (req, res) => {
+routes.get('/api/status', (req, res) => {
 	res.send({ status: 200 })
 })
 
 //Registration
-routes.post('/registration/:eventId', verifyToken, RegistrationController.create)
-routes.get('/registration', verifyToken, RegistrationController.getMyRegistrations)
-routes.get('/registration/:registration_id', RegistrationController.getRegistration)
-routes.post('/registration/:registration_id/approvals', verifyToken, ApprovalController.approval)
-routes.post('/registration/:registration_id/rejections', verifyToken, RejectionController.rejection)
+routes.post('/api/registration/:eventId', verifyToken, RegistrationController.create)
+routes.get('/api/registration', verifyToken, RegistrationController.getMyRegistrations)
+routes.get('/api/registration/:registration_id', RegistrationController.getRegistration)
+routes.post('/api/registration/:registration_id/approvals', verifyToken, ApprovalController.approval)
+routes.post('/api/registration/:registration_id/rejections', verifyToken, RejectionController.rejection)
 
 //Login
-routes.post('/login', LoginController.store)
+routes.post('/api/login', LoginController.store)
 
 //Dashboard
-routes.get('/dashboard/:sport', verifyToken, DashboardController.getAllEvents)
-routes.get('/dashboard', verifyToken, DashboardController.getAllEvents)
-routes.get('/user/events', verifyToken, DashboardController.getEventsByUserId)
-routes.get('/event/:eventId', verifyToken, DashboardController.getEventById)
+routes.get('/api/dashboard/:sport', verifyToken, DashboardController.getAllEvents)
+routes.get('/api/dashboard', verifyToken, DashboardController.getAllEvents)
+routes.get('/api/user/events', verifyToken, DashboardController.getEventsByUserId)
+routes.get('/api/event/:eventId', verifyToken, DashboardController.getEventById)
 
 //Events 
-routes.post('/event', verifyToken, uploadToS3.single('thumbnail'), EventController.createEvent)
-routes.delete('/event/:eventId', verifyToken, EventController.delete)
+// routes.post('/api/event', verifyToken, uploadToS3.single('thumbnail'), EventController.createEvent) removes s3 support
+routes.post('/api/event', verifyToken, upload.single('thumbnail'), EventController.createEvent)
+routes.delete('/api/event/:eventId', verifyToken, EventController.delete)
 
 //User
-routes.post('/user/register', UserController.createUser)
-routes.get('/user/:userId', UserController.getUserById)
+routes.post('/api/user/register', UserController.createUser)
+routes.get('/api/user/:userId', UserController.getUserById)
 
 module.exports = routes

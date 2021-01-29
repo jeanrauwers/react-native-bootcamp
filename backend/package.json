@@ -6,7 +6,9 @@
   "scripts": {
     "lint": "eslint ./src --fix",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "build-docker-image": "docker build . -t react-native-bootcamp/backend",
+    "run-docker-image": "docker-compose up"
   },
   "keywords": [],
   "author": "",
