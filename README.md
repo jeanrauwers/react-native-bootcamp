@@ -24,7 +24,7 @@ So please share this video with your friends.
 
 ## Videos on Youtube :
 
-* [MERN Bootcamp demo](https://www.youtube.com/watch?v=vtuciNQFpyA) - The Web App demo of the project can be found here.
+* [React-Native Bootcamp demo](https://youtu.be/Dnrc8W4jb-E) - The Web App demo of the project can be found here.
 
 
 ## Want to know more about my motivation for this project?
