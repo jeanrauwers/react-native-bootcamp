@@ -47,9 +47,6 @@ module.exports = {
 			} else {
 				const { title, description, price, sport, date } = req.body
 				const { filename } = req.file
-				console.log('🚀 ------------------------------------------------------------------------------------------')
-				console.log('🚀 ~ file: EventController.js ~ line 54 ~ jwt.verify ~ authData.user._id', authData.user._id)
-				console.log('🚀 ------------------------------------------------------------------------------------------')
 
 				try {
 					const user = await User.findById(authData.user._id)
@@ -57,9 +54,6 @@ module.exports = {
 					if (!user) {
 						return res.status(400).json({ message: 'User does not exist!' })
 					}
-					console.log('🚀 ----------------------------------------------------------------')
-					console.log('🚀 ~ file: EventController.js ~ line 56 ~ jwt.verify ~ user', user)
-					console.log('🚀 ----------------------------------------------------------------')
 
 					const event = await Event.create({
 						title,
