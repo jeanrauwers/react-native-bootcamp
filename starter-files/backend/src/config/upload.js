@@ -10,6 +10,5 @@ module.exports = {
 
 			cb(null, `${name.replace(/\s/g, '')}-${Date.now()}${ext}`)
 		}
-
 	})
 }

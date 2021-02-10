@@ -21,7 +21,7 @@ try {
 	})
 	console.log('MongoDb connected successfully!')
 } catch (error) {
-	console.log(error)
+	console.log(`mongodb Connection error - ${error}`)
 }
 
 
