@@ -24,7 +24,8 @@ So please share this video with your friends.
 
 ## Videos on Youtube :
 
-* [React-Native Bootcamp demo](https://youtu.be/Dnrc8W4jb-E) - The Web App demo of the project can be found here.
+* [React-Native Bootcamp demo](https://youtu.be/Dnrc8W4jb-E) - The Mobile App demo can be found here.
+* [React-Native Botcamp episode 0](https://youtu.be/s1Y3HkVh4lk) - Installing dependencies and starting coding
 
 
 ## Want to know more about my motivation for this project?
