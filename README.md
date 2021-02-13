@@ -26,7 +26,7 @@ So please share this video with your friends.
 
 * [React-Native Bootcamp demo](https://youtu.be/Dnrc8W4jb-E) - The Mobile App demo can be found here.
 * [React-Native Botcamp episode 0](https://youtu.be/s1Y3HkVh4lk) - Installing dependencies and starting coding.
-* [React-Native Botcamp episode 0](https://youtu.be/Eg_W_TRkAeQ) - Creating Login and Register pages.
+* [React-Native Botcamp episode 1](https://youtu.be/Eg_W_TRkAeQ) - Creating Login and Register pages.
 
 
 ## Want to know more about my motivation for this project?
