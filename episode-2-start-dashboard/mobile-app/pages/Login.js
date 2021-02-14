@@ -63,8 +63,6 @@ const Login = ({ navigation }) => {
           <TextInput style={styles.input}
             placeholder="Password:"
             placeholderTextColor="#ffffff"
-            keyboardType="password"
-            type="password"
             secureTextEntry={true}
             autoCorrect={false}
             value={password}
