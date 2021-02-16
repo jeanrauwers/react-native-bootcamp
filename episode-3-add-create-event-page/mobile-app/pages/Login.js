@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, TextInput } from 'react-native'
 
 const bgImage = require('../assets/background.jpg')
+import isLoggedIn from '../hooks/isLoggedIn'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
 
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
+  const [user, user_id] = isLoggedIn(navigation);
 
 
   const submitHandler = async () => {
@@ -20,14 +23,10 @@ const Login = ({ navigation }) => {
       const responseJson = await response.json()
 
       if (responseJson.user && responseJson.user_id) {
-        // Save token in mobile db
-
-        //route the user to Dashboard
+        await AsyncStorage.setItem('user', responseJson.user)
+        await AsyncStorage.setItem('user_id', responseJson.user_id)
         navigation.navigate('Dashboard')
       }
-      console.log('🚀 ----------------------------------------------------------------------------')
-      console.log('🚀 ~ file: Register.js ~ line 24 ~ submitHandler ~ responseJson', responseJson)
-      console.log('🚀 ----------------------------------------------------------------------------')
 
     } catch (error) {
       console.log('🚀 --------------------------------------------------------------')
@@ -35,7 +34,6 @@ const Login = ({ navigation }) => {
       console.log('🚀 --------------------------------------------------------------')
 
     }
-
   }
 
   const registerInsteadHandler = () => {
@@ -43,6 +41,11 @@ const Login = ({ navigation }) => {
     setPassword(null)
     navigation.navigate('Register')
   }
+
+
+  useEffect(() => {
+    if (user && user_id) navigation.navigate('Dashboard')
+  }, [user, user_id])
 
   return (
     <View style={styles.container}>

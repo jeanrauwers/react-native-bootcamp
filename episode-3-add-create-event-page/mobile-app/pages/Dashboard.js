@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, SafeAreaView, FlatList, Image } from 'react-native'
-
+import isLoggedIn from '../hooks/isLoggedIn';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const bgImage = require('../assets/background.jpg')
 
 const DashBoard = ({ navigation }) => {
+  const [user, user_id] = isLoggedIn(navigation);
   const [events, setEvents] = useState([{
     _id: 'idblah',
     title: 'London 5K running',
@@ -29,6 +31,13 @@ const DashBoard = ({ navigation }) => {
     thumbnail_url: 'https://admin.concern.org.uk/sites/default/files/styles/hero_desktop/public/media/images/2019-06/London%20Marathon%20-%20Jenny%20Flynn.jpg/'
   }])
 
+
+  const logoutHandler = async () => {
+    await AsyncStorage.removeItem('user')
+    await AsyncStorage.removeItem('user_id')
+    navigation.navigate('Login')
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
@@ -41,8 +50,9 @@ const DashBoard = ({ navigation }) => {
             keyExtractor={event => event._id}
             renderItem={({ item }) => {
 
+
               console.log('🚀 ---------------------------------------------------------')
-              console.log('🚀 ~ file: Dashboard.js ~ line 51 ~ DashBoard ~ item', item)
+              console.log('🚀 ~ file: Dashboard.js ~ line 51 ~ DashBoard ~ user data', user, user_id)
               console.log('🚀 ---------------------------------------------------------')
 
               return (<View style={styles.listItem}>
@@ -61,7 +71,7 @@ const DashBoard = ({ navigation }) => {
             }}>
 
           </FlatList>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity onPress={logoutHandler}>
             <Text>Logout</Text>
           </TouchableOpacity>
         </ImageBackground>

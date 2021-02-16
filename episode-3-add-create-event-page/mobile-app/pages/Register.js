@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TextInput, ImageBackground, TouchableOpacity } from 'react-native'
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const bgImage = require('../assets/background.jpg')
 
 const Register = ({ navigation }) => {
@@ -21,9 +22,13 @@ const Register = ({ navigation }) => {
       })
 
       const responseJson = await response.json()
-      console.log('🚀 ----------------------------------------------------------------------------')
-      console.log('🚀 ~ file: Register.js ~ line 24 ~ submitHandler ~ responseJson', responseJson)
-      console.log('🚀 ----------------------------------------------------------------------------')
+
+      if (responseJson.user && responseJson.user_id) {
+        await AsyncStorage.setItem('user', responseJson.user)
+        await AsyncStorage.setItem('user_id', responseJson.user_id)
+        navigation.navigate('Dashboard')
+      }
+
 
     } catch (error) {
       console.log('🚀 --------------------------------------------------------------')
