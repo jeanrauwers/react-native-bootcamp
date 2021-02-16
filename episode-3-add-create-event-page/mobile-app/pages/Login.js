@@ -35,7 +35,6 @@ const Login = ({ navigation }) => {
       console.log('🚀 --------------------------------------------------------------')
 
     }
-
   }
 
   const registerInsteadHandler = () => {
@@ -43,6 +42,11 @@ const Login = ({ navigation }) => {
     setPassword(null)
     navigation.navigate('Register')
   }
+
+
+  useEffect(() => {
+    if (user && user_id) navigation.navigate('Dashboard')
+  }, [user, user_id])
 
   return (
     <View style={styles.container}>

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TextInput, ImageBackground, TouchableOpacity } 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import isLoggedIn from '../hooks/isLoggedIn';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const bgImage = require('../assets/background.jpg')
 
 const Register = ({ navigation }) => {
