@@ -1,18 +1,22 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, TextInput, ImageBackground, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, ImageBackground, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import isLoggedIn from '../hooks/isLoggedIn';
 
 const bgImage = require('../assets/background.jpg')
 
 const Register = ({ navigation }) => {
+  const [user, user_id] = isLoggedIn();
   const [firstName, setName] = useState(null)
   const [lastName, setLastName] = useState(null)
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
 
+  useEffect(() => {
+    if (user !== null && user_id !== null) navigation.navigate('Dashboard')
+  }, [])
 
   const submitHandler = async () => {
-    console.log(firstName, lastName, email, password)
-
     try {
       const response = await fetch('http://localhost:8080/api/user/register', {
         method: "POST",
@@ -20,16 +24,16 @@ const Register = ({ navigation }) => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const responseJson = await response.json()
-      console.log('🚀 ----------------------------------------------------------------------------')
-      console.log('🚀 ~ file: Register.js ~ line 24 ~ submitHandler ~ responseJson', responseJson)
-      console.log('🚀 ----------------------------------------------------------------------------')
-
+      const { user, user_id } = await response.json()
+      if (user && user_id) {
+        await AsyncStorage.setItem('user', user);
+        await AsyncStorage.setItem('user_id', user_id);
+        navigation.navigate('Dashboard');
+      }
     } catch (error) {
       console.log('🚀 --------------------------------------------------------------')
       console.log('🚀 ~ file: Register.js ~ line 19 ~ submitHandler ~ error', error)
       console.log('🚀 --------------------------------------------------------------')
-
     }
 
   }

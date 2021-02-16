@@ -1,11 +1,16 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard'
+
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();
+
 
 export default function App() {
   const Stack = createStackNavigator()

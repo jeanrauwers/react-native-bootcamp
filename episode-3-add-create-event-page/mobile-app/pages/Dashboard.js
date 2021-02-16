@@ -1,9 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, SafeAreaView, FlatList, Image } from 'react-native'
+import isLoggedIn from '../hooks/isLoggedIn';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ActionButton from 'react-native-action-button';
+import ModalComponent from '../components/ModalComponent'
 
-const bgImage = require('../assets/background.jpg')
+const bgImage = require('../assets/background.jpg');
+import { FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 
 const DashBoard = ({ navigation }) => {
+  const [user, user_id] = isLoggedIn({ navigation });
+  const [modalIsVisible, setModalIsVisible] = useState(false);
   const [events, setEvents] = useState([{
     _id: 'idblah',
     title: 'London 5K running',
@@ -29,6 +36,12 @@ const DashBoard = ({ navigation }) => {
     thumbnail_url: 'https://admin.concern.org.uk/sites/default/files/styles/hero_desktop/public/media/images/2019-06/London%20Marathon%20-%20Jenny%20Flynn.jpg/'
   }])
 
+  const logoutHandler = async () => {
+    await AsyncStorage.removeItem('user');
+    await AsyncStorage.removeItem('user_id');
+    navigation.navigate('Login')
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
@@ -40,11 +53,6 @@ const DashBoard = ({ navigation }) => {
             showHorizontalScrollIndicator={true}
             keyExtractor={event => event._id}
             renderItem={({ item }) => {
-
-              console.log('🚀 ---------------------------------------------------------')
-              console.log('🚀 ~ file: Dashboard.js ~ line 51 ~ DashBoard ~ item', item)
-              console.log('🚀 ---------------------------------------------------------')
-
               return (<View style={styles.listItem}>
                 <Image
                   style={styles.thumbnail}
@@ -61,10 +69,17 @@ const DashBoard = ({ navigation }) => {
             }}>
 
           </FlatList>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <ModalComponent isVisible={modalIsVisible} setIsVisible={setModalIsVisible} user={user}></ModalComponent>
+          <TouchableOpacity onPress={logoutHandler}>
             <Text>Logout</Text>
           </TouchableOpacity>
         </ImageBackground>
+        <ActionButton buttonColor='#007bff' offsetX={0} offsetY={0}>
+          <ActionButton.Item title="New Event" onPress={() => setModalIsVisible(true)}>
+            <Ionicons name='ios-create' style={styles.actionButton} />
+          </ActionButton.Item>
+
+        </ActionButton>
       </View>
     </SafeAreaView>
   )
@@ -131,7 +146,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginTop: 20
   },
+  actionButton: {
+    fontSize: 20,
+    height: 22,
+    color: 'white'
+  }
 })
 
 
-export default DashBoard
+export default DashBoard;

@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, TextInput } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import isLoggedIn from '../hooks/isLoggedIn';
 
-const bgImage = require('../assets/background.jpg')
+const bgImage = require('../assets/background.jpg');
 
 const Login = ({ navigation }) => {
-
+  const [user, user_id] = isLoggedIn();
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
 
+  useEffect(() => {
+    if (user !== null && user_id !== null) navigation.navigate('Dashboard');
+  }, [])
 
   const submitHandler = async () => {
     try {
@@ -17,18 +22,13 @@ const Login = ({ navigation }) => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const responseJson = await response.json()
+      const { user, user_id } = await response.json()
 
-      if (responseJson.user && responseJson.user_id) {
-        // Save token in mobile db
-
-        //route the user to Dashboard
-        navigation.navigate('Dashboard')
+      if (user && user_id) {
+        await AsyncStorage.setItem('user', user);
+        await AsyncStorage.setItem('user_id', user_id);
+        navigation.navigate('Dashboard');
       }
-      console.log('🚀 ----------------------------------------------------------------------------')
-      console.log('🚀 ~ file: Register.js ~ line 24 ~ submitHandler ~ responseJson', responseJson)
-      console.log('🚀 ----------------------------------------------------------------------------')
-
     } catch (error) {
       console.log('🚀 --------------------------------------------------------------')
       console.log('🚀 ~ file: Register.js ~ line 19 ~ submitHandler ~ error', error)
