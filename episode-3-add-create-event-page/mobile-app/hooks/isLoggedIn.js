@@ -13,8 +13,6 @@ const isLoggedIn = (navigation) => {
         if (user !== null && user_id !== null) {
           setUser(user)
           setUserId(user_id)
-        } else {
-          // navigation.navigate('Login');
         }
       } catch (e) {
         console.log('🚀 -------------------------------------------------')
