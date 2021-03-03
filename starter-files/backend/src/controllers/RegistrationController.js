@@ -20,7 +20,7 @@ module.exports = {
 					.populate('user', '-password')
 					.execPopulate()
 
-				registration.owner = registration.event.user	
+				registration.owner = registration.event.user
 				registration.eventTitle = registration.event.title
 				registration.eventPrice = registration.event.price
 				registration.eventDate = registration.event.date
@@ -31,12 +31,17 @@ module.exports = {
 
 				const ownerSocket = req.connectUsers[registration.event.user]
 
+				console.log('🚀 ---------------------------------------------------------------------------------------')
+				console.log('🚀 ~ file: RegistrationController.js ~ line 42 ~ jwt.verify ~ registration', registration)
+				console.log('🚀 ---------------------------------------------------------------------------------------')
+
 				if (ownerSocket) {
 					req.io.to(ownerSocket).emit('registration_request', registration)
 				}
 
 				return res.json(registration)
 			}
+
 		})
 	},
 
@@ -65,6 +70,9 @@ module.exports = {
 				try {
 					const registrationsArr = await Registration.find({ "owner": authData.user._id })
 					if (registrationsArr) {
+						console.log('🚀 -----------------------------------------------------------------------------------------------')
+						console.log('🚀 ~ file: RegistrationController.js ~ line 72 ~ jwt.verify ~ registrationsArr', registrationsArr)
+						console.log('🚀 -----------------------------------------------------------------------------------------------')
 						return res.json(registrationsArr);
 					}
 

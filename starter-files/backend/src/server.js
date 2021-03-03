@@ -4,15 +4,15 @@ const cors = require('cors')
 const routes = require('./routes')
 const path = require('path')
 const http = require('http')
-const socketio = require('socket.io')
 const PORT = process.env.PORT || 8080
 const app = express()
 const server = http.Server(app)
-
-const io = socketio(server)
-if (process.env.NODE_ENV !== 'production') {
-	require('dotenv').config()
-}
+const io = require("socket.io")(server, {
+	cors: {
+		origin: "*",
+		methods: ["GET", "POST", "DELETE"]
+	}
+});
 
 try {
 	mongoose.connect('mongodb://mongo:27017/docker-node-mongo', {
@@ -23,7 +23,6 @@ try {
 } catch (error) {
 	console.log(`mongodb Connection error - ${error}`)
 }
-
 
 const connectUsers = {};
 io.on('connection', socket => {

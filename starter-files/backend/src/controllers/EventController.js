@@ -64,6 +64,9 @@ module.exports = {
 						thumbnail: filename,
 						date
 					})
+					console.log('🚀 ------------------------------------------------------------------')
+					console.log('🚀 ~ file: EventController.js ~ line 67 ~ jwt.verify ~ event', event)
+					console.log('🚀 ------------------------------------------------------------------')
 
 					return res.json(event)
 				} catch (error) {

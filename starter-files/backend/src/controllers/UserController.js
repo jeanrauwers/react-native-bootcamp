@@ -16,6 +16,9 @@ module.exports = {
 					lastName,
 					password: hashPassword,
 				})
+				console.log('🚀 -------------------------------------------------------------------------------')
+				console.log('🚀 ~ file: UserController.js ~ line 19 ~ createUser ~ userResponse', userResponse)
+				console.log('🚀 -------------------------------------------------------------------------------')
 
 				return jwt.sign({ user: userResponse }, 'secret', (err, token) => {
 					return res.json({

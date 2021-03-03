@@ -9,13 +9,17 @@ module.exports = {
 			} else {
 				const { eventId } = req.params
 				try {
-					const events = await Event.findById(eventId)
-
-					if (events) {
-						return res.json({ authData: authData, events: events })
+					const event = await Event.findById(eventId)
+					if (event) {
+						console.log('🚀 ------------------------------------------------------------------------')
+						console.log('🚀 ~ file: DashboardController.js ~ line 34 ~ jwt.verify ~ events', event)
+						console.log('🚀 ------------------------------------------------------------------------')
+						return res.json({ authData: authData, events: event })
+					} else {
+						return res.json({ message: 'EventId does not exist!' })
 					}
 				} catch (error) {
-					return res.status(400).json({ message: 'EventId does not exist!' })
+					return res.status(400).json({ message: error })
 				}
 			}
 
@@ -31,12 +35,17 @@ module.exports = {
 
 				try {
 					const events = await Event.find(query)
-					
+
 					if (events) {
+						console.log('🚀 ------------------------------------------------------------------------')
+						console.log('🚀 ~ file: DashboardController.js ~ line 34 ~ jwt.verify ~ events', events)
+						console.log('🚀 ------------------------------------------------------------------------')
 						return res.json({ authData, events })
+					} else {
+						return res.json({ message: 'We do have any events yet' })
 					}
 				} catch (error) {
-					return res.status(400).json({ message: 'We do have any events yet' })
+					return res.status(400).json({ message: error })
 				}
 
 			}
@@ -56,9 +65,11 @@ module.exports = {
 
 					if (events) {
 						return res.json({ authData, events })
+					} else {
+						return res.status(400).json({ message: `We do have any events with the user_id ${user_id}` })
 					}
 				} catch (error) {
-					return res.status(400).json({ message: `We do have any events with the user_id ${user_id}` })
+					return res.status(400).json({ message: error })
 				}
 			}
 		})
