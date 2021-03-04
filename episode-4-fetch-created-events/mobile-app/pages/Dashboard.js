@@ -11,30 +11,21 @@ import { FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-ico
 const DashBoard = ({ navigation }) => {
   const [user, user_id] = isLoggedIn({ navigation });
   const [modalIsVisible, setModalIsVisible] = useState(false);
-  const [events, setEvents] = useState([{
-    _id: 'idblah',
-    title: 'London 5K running',
-    sport: 'Running',
-    description: "The best 5K event in London",
-    price: "39.00",
-    thumbnail_url: 'https://admin.concern.org.uk/sites/default/files/styles/hero_desktop/public/media/images/2019-06/London%20Marathon%20-%20Jenny%20Flynn.jpg/'
-  },
-  {
-    _id: 'idbah',
-    title: 'London 5K running',
-    sport: 'Running',
-    description: "The best 5K event in London",
-    price: "39.00",
-    thumbnail_url: 'https://admin.concern.org.uk/sites/default/files/styles/hero_desktop/public/media/images/2019-06/London%20Marathon%20-%20Jenny%20Flynn.jpg/'
-  },
-  {
-    _id: 'idbla',
-    title: 'London 5K running',
-    sport: 'Running',
-    description: "The best 5K event in London",
-    price: "39.00",
-    thumbnail_url: 'https://admin.concern.org.uk/sites/default/files/styles/hero_desktop/public/media/images/2019-06/London%20Marathon%20-%20Jenny%20Flynn.jpg/'
-  }])
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    loadEvents()
+  }, [])
+
+  const loadEvents = async () => {
+    const response = await fetch(`http://localhost:8080/api/dashboard`, {
+      method: 'GET',
+      headers: { user: user }
+    })
+
+    const jsonResponse = await response.json()
+    setEvents(jsonResponse.events)
+  }
 
   const logoutHandler = async () => {
     await AsyncStorage.removeItem('user');
@@ -69,7 +60,7 @@ const DashBoard = ({ navigation }) => {
             }}>
 
           </FlatList>
-          <ModalComponent isVisible={modalIsVisible} setIsVisible={setModalIsVisible} user={user}></ModalComponent>
+          <ModalComponent isVisible={modalIsVisible} setIsVisible={setModalIsVisible} user={user} loadEvents={loadEvents} />
           <TouchableOpacity onPress={logoutHandler}>
             <Text>Logout</Text>
           </TouchableOpacity>
