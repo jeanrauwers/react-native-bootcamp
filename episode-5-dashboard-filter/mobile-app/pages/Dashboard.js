@@ -6,7 +6,7 @@ import ActionButton from 'react-native-action-button';
 import ModalComponent from '../components/ModalComponent'
 
 const bgImage = require('../assets/background.jpg');
-import { FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 const DashBoard = ({ navigation }) => {
   const [user, user_id] = isLoggedIn({ navigation });
@@ -14,11 +14,11 @@ const DashBoard = ({ navigation }) => {
   const [events, setEvents] = useState([])
 
   useEffect(() => {
-    loadEvents()
-  }, [])
+    loadEvents('')
+  }, [user])
 
-  const loadEvents = async () => {
-    const response = await fetch(`http://localhost:8080/api/dashboard`, {
+  const loadEvents = async (query = '') => {
+    const response = await fetch(`http://localhost:8080/api/dashboard/${query}`, {
       method: 'GET',
       headers: { user: user }
     })
@@ -31,6 +31,15 @@ const DashBoard = ({ navigation }) => {
     await AsyncStorage.removeItem('user');
     await AsyncStorage.removeItem('user_id');
     navigation.navigate('Login')
+  }
+
+  const deleteEventHandler = async (eventId) => {
+    await fetch(`http://localhost:8080/api/event/${eventId}`, {
+      method: 'DELETE',
+      headers: { user: user }
+    })
+
+    loadEvents()
   }
 
   return (
@@ -53,6 +62,9 @@ const DashBoard = ({ navigation }) => {
                 <Text style={styles.sport}><Text style={styles.boldText}>Sport:</Text> {item.sport}</Text>
                 <Text style={styles.price}><Text style={styles.boldText}>Price:</Text> {'$' + item.price}</Text>
                 <Text style={styles.description}><Text style={styles.boldText}>Description:</Text> {item.description}</Text>
+                { item.user === user_id ? <TouchableOpacity style={styles.deleteBtn} onPress={() => deleteEventHandler(item._id)}>
+                  <MaterialIcons name="delete-forever" size={36} color="red" />
+                </TouchableOpacity> : null}
                 <TouchableOpacity style={styles.primaryBtn} onPress={() => console.log('Register')}>
                   <Text style={{ color: "#FFFF" }}>Register</Text>
                 </TouchableOpacity>
@@ -66,10 +78,21 @@ const DashBoard = ({ navigation }) => {
           </TouchableOpacity>
         </ImageBackground>
         <ActionButton buttonColor='#007bff' offsetX={0} offsetY={0}>
-          <ActionButton.Item title="New Event" onPress={() => setModalIsVisible(true)}>
+          <ActionButton.Item buttonColor='#9b59b6' title="New Event" onPress={() => setModalIsVisible(true)}>
             <Ionicons name='ios-create' style={styles.actionButton} />
           </ActionButton.Item>
-
+          <ActionButton.Item buttonColor="#3498db" title="All Events" onPress={() => loadEvents()}>
+            <FontAwesome5 name="infinity" size="24" color="white" />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor="#1abc9c" title="Running" onPress={() => loadEvents('Running')}>
+            <FontAwesome5 name='running' style={styles.actionButton} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor="#1abc9c" title="Cycling" onPress={() => loadEvents('Cycling')}>
+            <FontAwesome5 name='bicycle' style={styles.actionButton} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor="#1abc9c" title="Swimming" onPress={() => loadEvents('Swimming')}>
+            <MaterialCommunityIcons name='swim' style={styles.actionButton} />
+          </ActionButton.Item>
         </ActionButton>
       </View>
     </SafeAreaView>
@@ -141,6 +164,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     height: 22,
     color: 'white'
+  },
+  deleteBtn: {
+    position: 'relative',
+    backgroundColor: '#ffff',
+    width: 36,
+    left: '92%',
+    bottom: '73%'
   }
 })
 
