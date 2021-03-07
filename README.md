@@ -28,6 +28,11 @@ So please share this video with your friends.
 * [React-Native Botcamp episode 0](https://youtu.be/s1Y3HkVh4lk) - Installing dependencies and starting coding.
 * [React-Native Botcamp episode 1](https://youtu.be/Eg_W_TRkAeQ) - Creating Login and Register pages.
 * [React-Native Botcamp episode 2](https://youtu.be/ZoX3otWqM-Y) - Creating Dashboard page and display first event.
+* [React-Native Botcamp episode 3 - A](https://youtu.be/IdKzvEH4Znk) - Add Events modal and form.
+* [React-Native Botcamp episode 3 - B](https://youtu.be/j7Pfss5rr8w) - Finish the input fields for the modal and add the picker-image.
+* [React-Native Botcamp episode 4](https://youtu.be/DfM8ego4rlU) - Finalize modal details to post new event to server.
+* [React-Native Botcamp episode 5](https://youtu.be/QEwZlVBlhuQ) - Post and Get Event from Dashboard page and filter by sport.
+
 
 
 ## Want to know more about my motivation for this project?
